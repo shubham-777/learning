@@ -28,4 +28,12 @@ def run_on_subset(func, data_subset):
 def parallelize_on_rows(data, func, num_of_processes=8):
     return parallelize(data, partial(run_on_subset, func), num_of_processes)
 
+# usage of pool
+num_of_processes = 3
+data_split = np.array_split(symbol_list, 35)
+pool = Pool(num_of_processes) #, worker_init, initargs=(symbol_list,))
+df_stock_bulk_record = pd.concat(pool.map(prepare_stock_data, data_split))
+pool.close()
+pool.join()
+
 
